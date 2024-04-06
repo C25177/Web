@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RelationSelector</title>
+  <style>
+    ul li {
+      color: green;
+    }
+    div>a{
+      color:red;
+    }
+    h1+p{
+      color:blue;
+    }
+    
+    h2~p{
+      color:burlywood;
+    }
+  </style>
+</head>
+<body>
+  <ul>
+    <li>列表1</li>
+    <li>列表2</li>
+    <li>列表3</li>
+  </ul>
+
+  <div>
+    <a>子元素</a>
+    <a>子元素2</a>
+    <p><a>孙元素</a></p>
+  </div>
+
+  <h1>h1</h1>
+  <p>p</p>
+
+  <h2>h2</h2>
+  <p>p</p>
+  <p>p</p>
+  <p>p</p>
+  <p>p</p>
+
+</body>
+</html>
