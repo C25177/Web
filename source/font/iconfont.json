@@ -1,0 +1,16 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "33997774",
+      "name": "餐桌",
+      "font_class": "canzhuo",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    }
+  ]
+}

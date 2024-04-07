@@ -322,6 +322,100 @@ CSS 中权重用数字衡量
 
 设置定位之后，相对定位和绝对定位是相对于具有定位的父级元素进行位置调整，会逐层往上找，直到找到具有定位的父层元素，或者直到文章顶层
 
+可以使用语句 `margin: 0 auto` 实现左右居中
+
 ### Z-index
 
 设置元素的堆叠顺序，更高堆叠顺序的元素总是会处于更低的堆叠顺序的元素前面
+
+### 圆角
+
+`border-radius` 圆角，给任何元素添加圆角，可以使用以下规则
+
+- 四个值：左上+右上+右下+左下
+- 三个值：左上+右上左下+右下
+- 两个值：左上右下+右上左下
+- 一个值：四个圆角相同
+
+### 阴影
+
+`box-shadow` 向框内添加一个或者多个阴影
+
+```CSS
+box-shadow: h-shadow v-shadow bulr color
+```
+
+- `h-shadow` 水平阴影位置，必选，正为向下
+- `v-shadow` 垂直阴影位置，必选，正为向左
+- `blur` 阴影的模糊距离，给阴影添加一个模糊效果，可选
+- `color` 阴影的颜色，可选
+
+### 动画
+
+动画是元素从一种样式逐渐变化到另一种样式的效果，可以改变任意多的样式和任意多的次数，用百分比来规定变化发生的时间，或用 `from` 和 `to` 表示，等同于 `0%` 和 `100%` 。用 `@keyframes` 规则来创建动画
+
+使用 `animation` 使用动画
+
+```CSS
+animation: name duration timing-function delay iteration-count direction
+```
+
+- `name` 动画名称
+- `duration` 持续时间
+- `timing-function` 设置动画速率
+  - `ease` 逐渐变慢（默认）
+  - `linear` 匀速
+  - `ease-in` 加速
+  - `ease-out` 减速
+  - `ease-in-out` 先加速后减速
+- `delay` 设置动画开始时间（延时执行）
+- `iteration-count` 循环次数， `infinite` 表示无限次
+- `direction` 播放的方向
+  - `normal` 表示向前播放
+  - `alternate` 动画在第偶数次向前播放，奇数次向后播放
+- `animation-play-state` 动画播放的状态， `running` 表示播放， `paused` 表示停止
+
+### 媒体查询
+
+主要使得页面根据设备的大小，自动识别加载不同的样式
+
+**设置meta标签**
+
+使用设备的宽度作为视图宽度并且禁止初始的缩放，在 `<head>` 标签内加入这个 `meta` 标签
+
+```HTML
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+```
+
+- `width=device-width` 宽度等于当前设备宽度
+- `initial-scale` 初始缩放比例，默认为 1
+- `maximum-scale` 允许用户缩放到的最大比例
+- `user-scalable` 用户是否可以手动缩放
+
+### 精灵图
+
+CSS Sprite 就是 CSS 精灵图，是一种网页图片的应用处理方式，允许将一个页面所涉及到的所有零星图片都包含到一张大图上去
+
+**优点**
+
+- 可以减少图片的字节
+- 减少网页的 `http` 请求，从而提高网页性能
+
+**原理**
+
+- 通过 `background-image` 引入背景图片
+- 通过 `background-position` 将背景图片移到需要的地方
+
+### 字体图标
+
+可以使用字体图标来代替图片，以此来解决图片占用资源的问题
+
+**优点**
+
+- 轻量性：加载速度快，减少 `http` 请求
+- 灵活性：可以利用 `css` 设置大小颜色等属性
+- 兼容性：网页字体支持所有现代浏览器
+
+**使用字体图标**
+
+从阿里字体图标库下载字体图标，然后将其中除了 `demo` 的文件之外都移入项目中的 `font` 文件中，然后在 `css` 中使用。但是需要注意的是，给这个图标类设置字体图标大小会发现这个属性被覆盖掉了，所以可以再给它一个类名，然后给那个类名设置大小就可以了
