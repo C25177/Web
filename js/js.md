@@ -248,20 +248,20 @@ dom 的最小组成单位为节点，文档的树形结构是不同的节点组�
 
 ### Node.nodeType
 
-| Node类型 | Named Constant |
-| --- | --- |
-| 1 | ELEMENT_NODE |
-| 2 | ATTRIBUTE_NODE |
-| 3 | TEXT_NODE |
-| 4 | CDATA_SECTION_NODE |
-| 5 | ENTITY_REFERENCE_NODE |
-| 6 | ENTITY_NODE |
-| 7 | PROCESSING_INSTRUCTION_NODE |
-| 8 | COMMENT_NODE |
-| 9 | DOCUMENT_NODE |
-| 10 | DOCUMENT_TYPE_NODE |
-| 11 | DOCUMENT_FRAGMENT_NODE |
-| 12 | NOTATION_NODE |
+| Node类型 | Named Constant              |
+| -------- | --------------------------- |
+| 1        | ELEMENT_NODE                |
+| 2        | ATTRIBUTE_NODE              |
+| 3        | TEXT_NODE                   |
+| 4        | CDATA_SECTION_NODE          |
+| 5        | ENTITY_REFERENCE_NODE       |
+| 6        | ENTITY_NODE                 |
+| 7        | PROCESSING_INSTRUCTION_NODE |
+| 8        | COMMENT_NODE                |
+| 9        | DOCUMENT_NODE               |
+| 10       | DOCUMENT_TYPE_NODE          |
+| 11       | DOCUMENT_FRAGMENT_NODE      |
+| 12       | NOTATION_NODE               |
 
 不同节点的 `nodeType` 属性值和对应的常量如下
 
@@ -365,3 +365,74 @@ dom 的最小组成单位为节点，文档的树形结构是不同的节点组�
 - `keyup` 松开键盘时触发的事件
 
 **event对象**
+
+`keyCode` 表示你所按下的按键的代码
+
+### 表单事件
+
+是使用表单元素以及输入框元素可以监听的一系列事件
+
+- `input` 当 `<input>` ， `<select>` 和 `<textarea>` 的值发生变化时触发，对于复选框 `<input type=checkbox>` 或单选框 `<input type=radio>` ，当用户改变选项时，也会触发这个事件，每按下一次按键就会触发一次
+- `select` 当 `<select>` 事件在 `<input>` 和 `<textarea>` 中选中文本时触发
+- `Change` 当 `<input>` ， `<select>` 和 `<textarea>` 的值发生变化时触发，但是只有当全部修改完之后才会触发
+- `reset` 这是发生在表单对像上的，当表单重置时触发
+- `submit` 这是发生在表单对象上的，当表单数据向服务器提交时触发，发生对象是 `<form>` 元素，而不是 `<button>` 元素
+
+### 事件代理
+
+由于事件会在冒泡阶段传递给父结点，因此可以把子结点的监听函数定义在父结点，由父结点的监听函数统一处理多个子元素的事件，这种方法就是代理
+
+### 定时器setTimeout
+
+`js` 中提供定时执行代码的功能，叫做定时器，主要由 `setTimeout` 和 `setInterval` 两个函数完成，它们向任务队列中添加定时任务
+
+- `setTimeout` 用来指定某个函数或者某段代码，在多少毫秒之后运行，返回一个整数，表示定时器的编号，以后可以取消定时器，接收两个参数，第一个参数是将要推迟执行的函数名或者一段代码，第二个参数是推迟执行的毫秒数，只执行一次。还有就是如果回调函数是对象的方法，那么该函数使得方法内部 `this` 关键字指向全局环境，而不是定义时所在的那个对象
+- `setInterval` 这个函数与上述定时器的函数几乎一致，唯一不同之处在于这个函数的定时器是循环执行无数次
+- `clearTimeout(id)` 取消定时器，参数就是上述的定时器编号
+
+### 防抖
+
+防抖严格来说应该属于性能优化事件，对于高频的信息，处理不当会导致浏览器卡死，例如一个滚动条监听的例子
+
+```HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    div{
+      width:500px;
+      height:500px;
+    }
+  </style>
+</head>
+<body>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <div>1</div>
+  <script>
+    function showTop() {
+      var scrollTop = document.documentElement.scrollTop;
+      console.log("滚动条位置：" + scrollTop);
+    }
+    window.onscroll = showTop;
+  </script>
+</body>
+</html>
+```
+
+一次滚动能产生好多条消息，执行频率太高了，会导致网页卡顿，有一种解决方式就是在第一次触发时，不立即执行函数，而是给一个期望值的定时器去执行，然后如果在这个期望值内没有发生触发滚动条件，那就执行函数，如果在这段时间内再次触发事件，那之前的计时取消，从新开始计时，从而保证短时间内多次触发只执行一次函数
+
+### 节流
+
+节流也属于是性能优化的功能，对于上述的防抖，就会导致在规定的时间段内，不断触发滚动事件，只要不停止触发，理论上就永远不会输出当前距离顶部的位置
+
+节流就是在某次触发之后，函数执行一次之后，在短时间内不会再次触发，过了一段事件之后才生效
+
+对于防抖的常用场景
+
+- 搜索框 `input` 要支持实时搜索可以使用节流方案，或者实现输入间隔大于某个值之后就当作输入完成，然后开始搜索
+- 页面 `resize` 事件，用于需要做页面适配的时候，根据最终呈现的情况进行 `dom` 渲染就可以了，一般会使用防抖，因为只需要判断最后一次的变化情况就可

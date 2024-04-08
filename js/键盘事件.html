@@ -7,6 +7,7 @@
 </head>
 <body>
   输入:<input id="1">
+  输入:<input id="2">
 
   <script>
     var d = document.getElementById("1");
@@ -19,6 +20,12 @@
     d.onkeyup = function() {
       console.log("键盘松开");
     }
+    
+    var d2 = document.getElementById("2");
+    d2.onkeydown = function(e) {
+      console.log(e.keyCode)
+    }
+
   </script>
 </body>
 </html>

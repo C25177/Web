@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <form id="form" onsubmit="submitHandle">
+    用户名:<input type="text" id="input1" name="username">
+    <br>
+    密码:<input type="text" name="password">
+    <br>
+    <button id="resetbtn" onclick="resetfunc">reset</button>
+    <button>提交</button>
+  </form>
+  <script>
+    var input1=document.getElementById("input1")
+    input1.oninput=function(e){
+      console.log("input " + e.target.value);
+    }
+    input1.onselect=function(e){
+      console.log(e.type);
+    }
+    input1.onchange=function(e){
+      console.log("change " + e.target.value);
+    }
+
+    var bt1=document.getElementById("resetbtn");
+    var form=document.getElementById("form");
+    function resetfunc() {
+      console.log(1);
+      form.reset();
+    }
+    function submitHandle() {
+      alert("登录");
+    }
+  </script>
+</body>
+</html>
