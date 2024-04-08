@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="1" class="1 2 3 4">1234567890</div>
+  <script>
+    var p = document.querySelector("div");
+    console.log(p.id);
+    var p1 = document.getElementById("1");
+    console.log(p1.className);
+    p1.classList.add("5");
+    console.log(p1.className);
+    p1.classList.remove("1");
+    console.log(p1.className);
+    console.log(p1.classList.contains("5"));
+    p1.classList.toggle("1");
+    console.log(p1.className);
+    p1.classList.toggle("5");
+    console.log(p1.className);
+
+    p1.innerText = "abcdefg";
+    p1.innerHTML = "<a href='https://www.baidu.com'>百度</a>";
+
+    console.log(p1.clientHeight);
+    console.log(p1.clientWidth);
+    console.log(p1.scrollHeight);
+    console.log(p1.scrollWidth);
+    console.log(p1.scrollLeft);
+    console.log(p1.scrollTop);
+    console.log(p1.offsetHeight);
+    console.log(p1.offsetWidth);
+    console.log(p1.offsetLeft);
+    console.log(p1.offsetTop);
+
+  </script>
+</body>
+</html>

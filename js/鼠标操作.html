@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="bt1">click</button>
+  <button id="bt2">dblclick</button>
+  <button id="bt3">mousedown</button>
+  <button id="bt4">mouseup</button>
+  <button id="bt5">mousemove</button>
+  <button id="bt6">mouseseenter</button>
+  <button id="bt7">mouseleave</button>
+  <button id="bt8">mouseover
+    <div>mouseoverson</div>
+  </button>
+  <div>
+    mouseoutparent
+    <button id="bt9">mouseout</button>
+  </div>
+  <button id="bt10">wheel</button>
+
+  <script>
+    var bt1 = document.getElementById("bt1");
+    var bt2 = document.getElementById("bt2");
+    var bt3 = document.getElementById("bt3");
+    var bt4 = document.getElementById("bt4");
+    var bt5 = document.getElementById("bt5");
+    var bt6 = document.getElementById("bt6");
+    var bt7 = document.getElementById("bt7");
+    var bt8 = document.getElementById("bt8");
+    var bt9 = document.getElementById("bt9");
+    var bt10 = document.getElementById("bt10");
+    
+    bt1.onclick = clickfunc;
+    bt2.ondblclick = dblclickfunc;
+    bt3.onmousedown = mousedownfunc;
+    bt4.onmouseup = mouseupfunc;
+    bt5.onmousemove = mousemovefunc;
+    bt6.onmouseenter = mouseenterfunc;
+    bt7.onmouseleave = mouseleavefunc;
+    bt8.onmouseover = mouseoverfunc;
+    bt9.onmouseout = mouseoutfunc;
+    bt10.onwheel = wheelfunc;
+    
+    function clickfunc() {
+      alert("单击触发");
+    }
+    function dblclickfunc() {
+      alert("双击触发");
+    }
+    function mousedownfunc() {
+      alert("按下触发");
+    }
+    function mouseupfunc() {
+      alert("释放触发");
+    }
+    var movecnt = 0;
+    function mousemovefunc() {
+      console.log(++movecnt);
+    }
+    function mouseenterfunc() {
+      alert("鼠标进入");
+    }
+    function mouseleavefunc() {
+      alert("鼠标离开");
+    }
+    function mouseoverfunc() {
+      alert("鼠标进入 mouseover")
+    }
+    function mouseoutfunc() {
+      alert("鼠标离开 mouseout")
+    }
+    function wheelfunc() {
+      alert("鼠标滚动")
+    }
+  </script>
+</body>
+</html>

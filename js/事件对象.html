@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+  
+    .root{
+      width:200px;
+      height:200px;
+      background-color: red;
+    }
+    .box{
+      width:100px;
+      height:100px;
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <button id="bt1">按钮</button>
+
+  <a href="https:\\www.baidu.com" id="a1">百度</a>
+
+  <div id="root" class="root">
+    <div id="box" class="box"></div>
+  </div>
+</body>
+  <script>
+    var a = 0;
+    var bt1 = document.getElementById("bt1");
+    bt1.onclick = function(event) {
+      event.target.innerHTML=++a;
+      console.log(event.type);
+    }
+    var a1 = document.getElementById("a1");
+    
+    a1.onclick = function(event) {
+      event.preventDefault();
+      alert("取消跳转");
+    }
+
+    var root = document.getElementById("root");
+    var box = document.getElementById("box");
+    root.onclick = function(){
+      console.log("root");
+    }
+    box.onclick = function(e){
+      e.stopPropagation();
+      console.log("box");
+    }
+
+  </script>
+</html>

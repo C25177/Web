@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="text">text1</div>
+  <div class="text">text2</div>
+  <div class="nav" name="nav1">nav1</div>
+  <div class="nav">nav2</div>
+  <div id="1">div1</div>
+
+<script>
+  var div1 = document.getElementsByTagName("div");
+  console.log(div1);
+  
+  var div2 = document.getElementsByClassName("nav");
+  console.log(div2);
+  
+  var div3 = document.getElementsByName("nav1");
+  console.log(div3);
+
+  var div4 = document.getElementById("1");
+  console.log(div4);
+
+  var nav = document.querySelector(".nav")
+  console.log(nav);
+
+  var navs = document.querySelectorAll(".nav")
+  console.log(navs);
+
+  var newdiv = document.createElement("div");
+  var newcontent = document.createTextNode("hello");
+  newdiv.appendChild(newcontent);
+  var it = document.createAttribute("id");
+  it.value = "2";
+  newdiv.setAttributeNode(it);
+  console.log(newdiv);
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="box"></div>
+  <div id="box1"></div>
+  <div id="box2"></div>
+  <script>
+    var box = document.getElementById("box");
+    box.setAttribute(
+      'style',
+      'background-color:red;' + 'width:100px;' + 'height:100px;'
+    );
+    
+    var box1style = document.getElementById("box1").style;
+    box1style.backgroundColor='blue';
+    box1style.width='200px';
+    box1style.height='200px';
+    
+    var box2style = document.getElementById("box2").style;
+    box2style.cssText='background-color:green;' + 'width:100px;' + 'height:100px;';
+
+  </script>
+</body>
+</html>

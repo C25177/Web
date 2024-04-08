@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  输入:<input id="1">
+
+  <script>
+    var d = document.getElementById("1");
+    d.onkeydown = function() {
+      console.log("键盘按下");
+    }
+    d.onkeypress = function() {
+      console.log("有值的键盘按下");
+    }
+    d.onkeyup = function() {
+      console.log("键盘松开");
+    }
+  </script>
+</body>
+</html>

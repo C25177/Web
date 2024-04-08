@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <button id="bt1" onclick="func()">html事件</button>
+    <button id="bt2">dom0级事件</button>
+    <button id="bt3">dom2级事件</button>
+  </div>
+  <script>
+    function func() {
+      alert("html事件处理");
+    }
+
+    bt2 = document.getElementById("bt2");
+    bt2.onclick=function(){alert("dom0级事件处理");}
+    
+    bt3 = document.getElementById("bt3");
+    bt3.addEventListener("click", func1);
+    bt3.addEventListener("click", func2);
+    function func1() {
+      alert("dom2级事件处理1");
+    }
+    function func2() {
+      alert("dom2级事件处理2");
+    }
+  </script>
+</body>
+</html>
