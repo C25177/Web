@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var a = "\u0061";
+    console.log(a);
+    
+    var s = "asdfgh";
+    for (let i of s) {
+      console.log(i);
+    }
+
+    var url = "www.baidu.com";
+    var h1 = "<a href='" + url + "'>百度</a>"
+    var h2 = `<a href='${url}'>百度</a>`
+
+    console.log(h1);
+    console.log(h2);
+
+    console.log(s.includes("as", 2));
+    console.log(s.startsWith("gh", 2));
+    console.log(s.endsWith("gh", 2));
+    
+    console.log(s.repeat(3));
+    
+    console.log('a'.padStart(4, "ac"));
+    console.log('a'.padEnd(4, "ac"));
+
+    console.log('  h  '.trimStart());
+    console.log('  h  '.trimEnd());
+
+  </script>
+</body>
+</html>
