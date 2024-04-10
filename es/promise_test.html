@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var condition = false;
+    const p2 = new Promise(function(resolve,reject){  
+        if(condition)
+          resolve('success3'); 
+        else
+          reject('reject');
+    });
+    
+    p2.then(function(value){ 
+        console.log(value);
+    }, function(value){ 
+        console.log(value);
+    });
+
+
+    const p = new Promise(function(resolve,reject){
+    resolve(1);
+    }).then(function(value){ // 第一个then // 1
+      console.log(value);
+      return value * 2;
+    }).then(function(value){ // 第二个then // 2
+      console.log(value);
+    }).then(function(value){ // 第三个then // undefined
+      console.log(value);
+      return Promise.resolve('resolve'); 
+    }).then(function(value){ // 第四个then // resolve
+      console.log(value);
+      return Promise.reject('reject'); 
+    }).then(function(value){ 
+      console.log('resolve:' + value);
+    }, function(err) { // 第五个then //reject:reject
+      console.log('reject:' + err);
+    });
+  
+  </script>
+</body>
+</html>

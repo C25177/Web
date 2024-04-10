@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var name = '1';
+    const user = {
+      name,
+      age: 10
+    };
+
+    const o = {
+      method() {
+        console.log("hello");
+      },
+      method1 : function() {
+        console.log("hello");
+      }
+    };
+
+    function getpoint() {
+      const x = 1;
+      const y = 2;
+      return {x, y};
+    };
+
+    var prokey = "name";
+    var obj = {
+      [prokey] : true,
+      ['a' + 'b'] : 123
+    };
+    console.log(obj);
+
+    var a = {
+      name1 : "a",
+      age : 1,
+    }
+    var b = {...a, ...obj};
+    console.log(b);
+
+  </script>
+</body>
+</html>

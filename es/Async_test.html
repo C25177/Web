@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function timeout(ms) {
+      const promise = new Promise((resolve, reject) => {
+        setTimeout(resolve, ms);
+      });
+    }
+
+    async function asyncprint(value, ms) {
+      await timeout(ms);
+      console.log(value);
+    }
+
+    asyncprint("1", 50);
+
+  </script>
+</body>
+</html>
