@@ -177,3 +177,49 @@ import{hello} form "./hello.js";
 ```
 
 测试需要采用 `Nodejs` 的方式测试 `module` 语法
+
+### Generator函数
+
+TODO:
+
+### Reflext与Proxy
+
+- `Proxy` 可以对目标对象的读取、函数调用等操作进行拦截，然后进行操作处理。它不直接操作对象，而是像代理模式，通过对象的代理对象进行操作，在进行这些操作时，可以添加一些需要的额外操作。
+
+- `Reflect` 可以用于获取目标对象的行为，它与 `Object` 类似，但是更易读，为操作对象提供了一种更优雅的方式。它的方法与 `Proxy` 是对应的
+
+**用法**
+
+1. Proxy
+
+一个 `Proxy` 对象由两个部分组成： `target` 和 `handler` 。在通过 `Proxy` 构造函数生成实例对象时，需要提供这两个参数。 `target` 即目标对象， `handler` 是一个对象，声明了代理 `target` 的指定行为
+
+```es6
+let target = {
+  name: 'Tom',
+  age: 24
+}
+let handler = {
+  get: function(target, key) {
+    console.log('getting '+key);
+    return target[key]; // 不是target.key
+  },
+  set: function(target, key, value) {
+    console.log('setting '+key);
+    target[key] = value;
+  }
+}
+let proxy = new Proxy(target, handler)
+proxy.name
+proxy.age = 25 
+proxy.sex = "man"
+```
+
+- target 可以为空对象
+- handler 对象也可以为空，相当于不设置拦截操作，直接访问目标对象
+- 通过构造函数新建实例时其实是对目标对象进行了浅拷贝，因此目标对象与代理对象会互相影响
+
+TODO:
+
+
+

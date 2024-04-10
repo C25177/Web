@@ -1,15 +1,18 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <ElementLife/>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import ElementLife from './components/元素生命周期'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    ElementLife
   }
 }
 </script>

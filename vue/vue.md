@@ -154,7 +154,101 @@ export default {
   - 引入组件 `import mycomponent from './components/mycomponent.vue'; './components/mycomponent'`
   - 挂载组件 `components: {mycomponent}`
   - 显示组件 `<mycomponent/>`
+- 组件组织，通常一个应用会以一棵嵌套的组件树的形式来组织
+  ![conponent_tree](vue/component_tree.png)
 
+### props组件交互
 
+组件与组件之间是需要存在交互的，否则完全没关系，组件的意义就很小了，而 `props` 是可以在组件上注册的一些自定义 `attribute` ，传递的方向就是父组件传递到子组件
 
+`props` 传递的参数是没有类型限制的，但是传入数据为数组或者对象类型时，默认值时需要返回工厂模式，也就是定义一个返回一个空数组的函数
 
+**使用方法**
+
+1. 在调用组件的文件中声明需要传递的变量，写法与组件文件中一致
+
+  ```js
+  data() {
+    return {
+      title: "一个标题",
+      age : 10,
+    }
+  }
+  ```
+
+  需要在加载组件时传入参数
+
+  ```vue
+  <props_test :title="title" :age="age"/>
+  ```
+
+2. 在组件中需要使用 `props` 声明变量
+
+  ```vue
+  <script>
+  export default {
+    name: "props_test",
+    props: {
+      title: {
+        type:String,
+        default:""
+      },
+      age: {
+        type: Number,
+        default:0
+      }
+    }
+  }
+  </script>
+  ```
+
+### 自定义事件组件交互
+
+自定义事件可以在组件中反向传递数据， `prop` 可以将数据从父组件传递到子数组，对于反向操作，可以使用自定义事件实现
+
+- 使用 `this.$emit()` 函数，其中第一个参数是字符串，理论上是随便的，但是需要与弗组件中对应，第二个参数就是传递的数据
+
+**使用**
+
+1. 首先在子组件中做定义一个按钮或者触发这个事件的元素
+
+  ```HTMl
+  <button @click="sendHandle">sendData</button>
+  ```
+
+  并且定义函数 `sendHandle`
+
+  ```JavaScript
+  sendHandle() {
+    this.$emit("onEvent", "data");
+  }
+  ```
+
+2. 在父组件中加载该组件时，需要做如下的定义
+
+  ```HTML
+  <props_test @onEvent="getDataHandle"/>
+  ```
+
+  需要注意，这里的 `onEvent` 与第一步中的 `$emit()` 的第一个参数是对应的，需要一致。然后自定义收到消息的回调函数，这里的 `data` 就是上述 `$emit()` 函数的第二个参数
+
+  ```JavaScript
+  getDataHandle(data) {
+    console.log(data);
+  }
+  ```
+
+### 组件的生命周期
+
+每个组件在被创建时都要经过一系列初始化的过程，例如设置数据监听，编译模板，实例挂载到 dom 上等，这个过程会运行一些叫做生命周期钩子的函数，给了用户在不同阶段添加代码的功能
+
+可以直接定义下面的函数，来实现在不同的阶段添加用户代码的功能
+
+- 创建时 `beforeCreate` `created`
+- 渲染时 `beforeMount` `mounted`
+- 更新时 `beforeUpdate` `updated`
+- 卸载时 `beforeUnmount` `unmounted`
+
+### 样式绑定
+
+TODO:
