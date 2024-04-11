@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function *func() {
+      console.log("one");
+      var x = yield '1';
+      console.log("x = " + x);
+      console.log("two");
+      return '2';
+    }
+    var f = func();
+    console.log(f.next());
+    console.log(f.next());
+    console.log(f.next());
+    
+    console.log("_____________________________")
+    var f1 = func();
+    console.log(f1.next(10));
+    console.log(f1.next(20));
+
+    console.log("_____________________________")
+    var f3 = func();
+    for (var item of f3) {
+      item;
+    }
+    
+    console.log("_____________________________")
+    var func2 = function* () {
+      try {
+        yield;
+      } catch (e) {
+        console.log('catch inner', e);
+      }
+    };
+    var f2 = func2();
+    f2.next;
+    try {
+      f2.throw('a');
+      f2.throw('b');
+    } catch (e) {
+      console.log('catch outside', e);
+    }
+    
+    console.log("_____________________________")
+    function* callee() {
+      console.log('callee: ' + (yield));
+    }
+    function* caller() {
+      while (true) {
+        yield* callee();
+      }
+    }
+    var ca = caller();
+    ca.next();
+    ca.next(1);
+    ca.next(2);
+
+  </script>
+</body>
+</html>

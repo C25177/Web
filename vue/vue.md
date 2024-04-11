@@ -99,11 +99,94 @@ export default {
 
 ### attribute属性
 
-`Mustache` 语法不能再 `html` 属性中使用，但是可以使用 `v-bind` 指令，有两种写法，如下
+`Mustache` 语法不能再 `html` 属性中使用，但是可以使用 `v-bind` 指令。 `class` 与 `style` 是 `html` 元素的属性，用于设置元素的样式，我们可以用 `v-bind` 来设置样式属性。有两种写法，如下
 
 ```vue
 <div v-bind:id="dynamicId">v-bind:</div>
 <div :id="dynamicId">v-bind:</div>
+```
+
+**内联样式**
+
+```vue
+<div id="app">
+  <div :style="{ color: activeColor, fontSize: fontSize + 'px' }">1</div>
+</div>
+<!--其中 activeColor:"red", fontSize: 20-->
+```
+上述会被渲染为
+
+```html
+<div :style="{ color: red, fontSize: 20px}">1</div>
+```
+
+内联样式还可指定多重值，提供一个包含多个值的数组，常用于提供多个带前缀的值，这样写只会渲染数组中最后一个被浏览器支持的值
+
+```vue
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+```
+
+**组件上使用class属性**
+
+当你在带有单个根元素的自定义组件上使用 class 属性时，这些 class 将被添加到该元素中。此元素上的现有 class 将不会被覆盖
+
+```vue
+<template>
+  <newComponentName class="classC classD"></newComponentName>
+</template>
+
+<script>
+var app = Vue.createApp({})
+app.component('newComponentName', {
+  template: '<h1 class="classA classB">这是一个新组件标题</h1>'
+})
+</script>
+```
+
+最终渲染结果为
+
+```html
+<h1 class="classA classB classC classD">这是一个新组件标题</h1>
+```
+
+对于带数据绑定的 `class` 也可使用
+
+```vue
+<newComponentName :class="{ active: isActive }"></newComponentName>
+```
+
+当 `isActive` 为 `true` 时，最终渲染效果为
+
+```html
+<h1 class="classA classB active">这是一个新组件标题</h1>
+```
+
+如果新的组件有多个根元素，需要定义哪些部分将接收这个类。可以使用 `$attrs` 组件属性执行此操作，可以用于传递组件属性和事件。下列的操作实际上就是继承原来的类属性
+
+```vue
+<div id="app">
+  <newComponentName class="classA"></newComponentName>
+</div>
+ 
+<script>
+const app = Vue.createApp({})
+app.component('newComponentName', {
+  template: `
+    <p :class="$attrs.class">这是一个段落</p>
+    <span>这是一个子组件</span>
+  `
+})
+app.mount('#app')
+</script>
+```
+
+最终渲染结果为
+
+```html
+<div id="app">
+  <p :class="classA">这是一个段落</p>
+  <span>这是一个子组件</span>
+</div>
 ```
 
 ### 使用Js表达式
@@ -248,7 +331,3 @@ export default {
 - 渲染时 `beforeMount` `mounted`
 - 更新时 `beforeUpdate` `updated`
 - 卸载时 `beforeUnmount` `unmounted`
-
-### 样式绑定
-
-TODO:

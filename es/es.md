@@ -180,17 +180,111 @@ import{hello} form "./hello.js";
 
 ### Generator函数
 
-TODO:
+`Generator` 函数有两个区分于普通函数的部分
+
+- 在 `function` 之后，函数名之前有个 `*`
+- 函数内部有 `yield` 表达式，用 `yield` 来定义函数内部的状态
+
+```es6
+function *func() {
+  console.log("one");
+  yield '1';
+  console.log("two");
+  return '2';
+}
+```
+
+**执行机制**
+
+调用 `Generator` 函数和调用普通函数一样，在函数名后加上 `()` 即可，但是该函数不会像普通函数一样立即执行，而是返回一个指向内部状态的指针，所以要调用遍历器对象 `iterator` 的 `next` 方法，指针就会从函数头部或者上一次停下来的地方开始执行，类似于 `python` 中的生成器函数，每调用一次都会执行到下一个 `yield` 或者 `return`
+
+```es6
+func.next(); // 'one' value='1'
+func.next(); // 'two' value='2'
+func.next(); // value=undefined
+```
+
+需要注意的是，如果获取 `yield` 的值，那每一步 `yield` 之后，执行下一次这个参数会变成 `undefined` ，但是如果使用 `next` 传参的话，这个数据就会被附上值，总之有点复杂，可以直接看运行结果
+
+```es6
+function *func() {
+  console.log("one");
+  var x = yield '1';
+  console.log("x = " + x);
+  console.log("two");
+  return '2';
+}
+var f = func();
+console.log(f.next()); 
+console.log(f.next());// x = undefined
+console.log(f.next());
+
+var f1 = func();
+console.log(f1.next(10)); 
+console.log(f1.next(20)); // x = 20
+```
+
+除了使用 `next` 遍历该函数，还可以使用 `for...of` 来实现遍历
+
+```es6
+var f3 = func();
+for (var item of f3) {
+  item;
+}
+```
+
+**return方法**
+
+返回给定值，并且结束遍历 `Generator` 函数
+
+提供参数时返回该参数，不提供参数时，返回 `undefined`
+
+**错误处理**
+
+对于下列 `Generator` 函数
+
+```es6
+var func2 = function* () {
+  try {
+    yield;
+  } catch (e) {
+    console.log('catch inner', e);
+  }
+};
+var f2 = func2();
+f2.next;
+try {
+  f2.throw('a');
+  f2.throw('b');
+} catch (e) {
+  console.log('catch outside', e);
+}
+```
+
+遍历器对象会抛出两个错误，第一个被 `Generator` 函数内部捕获，另一个因为函数体内部的 `catch` 函数已经执行过了，不会再捕获这个错误，所以这个错误就抛出 `Generator` 函数体，被函数体外的 `catch` 捕获
+
+**yield*表达式**
+
+`yield*` 表达式表示 `yield` 返回一个遍历器对象，用于在 `Generator` 函数内部，调用另一个 `Generator` 函数
+
+```es6
+function* callee() {
+  console.log('callee: ' + (yield));
+}
+function* caller() {
+  while (true) {
+    yield* callee();
+  }
+}
+```
 
 ### Reflext与Proxy
 
-- `Proxy` 可以对目标对象的读取、函数调用等操作进行拦截，然后进行操作处理。它不直接操作对象，而是像代理模式，通过对象的代理对象进行操作，在进行这些操作时，可以添加一些需要的额外操作。
-
+- `Proxy` 可以对目标对象的读取、函数调用等操作进行拦截，然后进行操作处理。它不直接操作对象，而是像代理模式，通过对象的代理对象进行操作，在进行这些操作时，可以添加一些需要的额外操作。 
 - `Reflect` 可以用于获取目标对象的行为，它与 `Object` 类似，但是更易读，为操作对象提供了一种更优雅的方式。它的方法与 `Proxy` 是对应的
+- `Reflect` 对象的方法与 `Proxy` 对象的方法是一一对应的。所以 `Proxy` 对象的方法可以通过调用 `Reflect` 对象的方法获取默认行为，然后进行额外操作
 
-**用法**
-
-1. Proxy
+### Proxy
 
 一个 `Proxy` 对象由两个部分组成： `target` 和 `handler` 。在通过 `Proxy` 构造函数生成实例对象时，需要提供这两个参数。 `target` 即目标对象， `handler` 是一个对象，声明了代理 `target` 的指定行为
 
@@ -215,11 +309,52 @@ proxy.age = 25
 proxy.sex = "man"
 ```
 
-- target 可以为空对象
-- handler 对象也可以为空，相当于不设置拦截操作，直接访问目标对象
+- `target` 可以为空对象
+- `handler` 对象也可以为空，相当于不设置拦截操作，直接访问目标对象
 - 通过构造函数新建实例时其实是对目标对象进行了浅拷贝，因此目标对象与代理对象会互相影响
 
-TODO:
+**实例方法**
 
+- `get(target, propKey, receiver)` 用于 `target` 对象上的 `propKey` 的读取操作，而且 `get` 方法可以继承
+- `set(target, propKey, value, receiver)` 用于拦截 `target` 对象上的 `propKey` 的赋值操作，如果目标对象自身的某个属性不可写且不可配置，那 `set` 方法将不起作用，第四个参数 `receiver` 表示原始操作行为所在对象，一般是 `Proxy` 实例本身，严格模式下， `set` 代理如果没有返回 `true` ，就会报错
+- `apply(target, ctx, args)` 用于拦截函数的调用， `call` 和 `reply` 操作，而 `target` 表示目标对象， `ctx` 表示目标对象上下文， `args` 表示目标对象的参数数组
+- `has(target, propKey)` 用于拦截 `HasProperty` 操作，即在判断 `target` 对象是否存在 `propKey` 属性时，会被这个方法拦截。此方法不判断一个属性是对象自身的属性，还是继承的属性，此方法不拦截 `for...in` 循环
+- `construct(target, args)` 此方法用于拦截 `new` 指令，返回值必须为对象
+- `deleteProperty(target, propKey)` 用于拦截 `delete` 操作，如果这个方法抛出错误或者返回 `false` ， `propKey` 属性就无法被 `delete` 命令删除
+- `defineProperty(target, propKey, propDesc)` 用于拦截 `Object.definePro` 若目标对象不可扩展，增加目标对象上不存在的属性会报错；若属性不可写或不可配置，则不能改变这些属性
+- `getOwnPropertyDescriptor(target, propKey)` 用于拦截 `Object.getOwnPropertyD()` 返回值为属性描述对象或者 `undefined`
+- `getPrototypeOf(target)` 主要用于拦截获取对象原型的操作，返回值必须是对象或者 `null` ，否则报错。另外，如果目标对象不可扩展（non-extensible）， `getPrototypeOf` 方法必须返回目标对象的原型对象，主要包括
+  - `Object.prototype._proto_`
+  - `Object.prototype.isPrototypeOf()`
+  - `Object.getPrototypeOf()`
+  - `Reflect.getPrototypeOf()`
+  - `instanceof`
+- `isExtensible(target)` 用于拦截 `Object.isExtensible` 操作，该方法只能返回布尔值，否则返回值会被自动转为布尔值，它的返回值必须与目标对象的isExtensible属性保持一致，否则会抛出错误
+- `ownKeys(target)` 用于拦截对象自身属性的读取操作，方法返回的数组成员，只能是字符串或 Symbol 值，否则会报错。若目标对象中含有不可配置的属性，则必须将这些属性在结果中返回，否则就会报错。若目标对象不可扩展，则必须全部返回且只能返回目标对象包含的所有属性，不能包含不存在的属性，否则也会报错。主要包括
+  - `Object.getOwnPropertyNames()`
+  - `Object.getOwnPropertySymbols()`
+  - `Object.keys()`
+  - `or...in`
+- `preventExtensions(target)` 拦截 `Object.preventExtensions` 操作。该方法必须返回一个布尔值，否则会自动转为布尔值
+- `setPrototypeOf()` 主要用来拦截 `Object.setPrototypeOf` 方法。返回值必须为布尔值，否则会被自动转为布尔值。若目标对象不可扩展， `setPrototypeOf` 方法不得改变目标对象的原型
+- `Proxy.revocable()` 用于返回一个可取消的 `Proxy` 实例
 
+### Reflect
 
+es6 中将 `Object` 的一些明显属于语言内部的方法移植到了 `Reflect` 对象上（当前某些方法会同时存在于 `Object` 和 `Reflect` 对象上），未来的新方法会只部署在 `Reflect` 对象上。 `Reflect` 对象对某些方法的返回结果进行了修改，使其更合理。 `Reflect` 对象使用函数的方式实现了 `Object` 的命令式操作
+
+**静态方法**
+
+- `Reflect.get(target, name, receiver)` 查找并返回 `target` 对象的 `name` 属性
+- `Reflect.set(target, name, value, receiver)` 将 `target` 的 `name` 属性设置为 `value` 。返回值为布尔值， `true` 表示修改成功，`false` 表示失败。当 `target` 为不存在的对象时，会报错
+- `Reflect.has(obj, name)` 是 `name in obj` 指令的函数化，用于查找 `name` 属性在 `obj` 对象中是否存在。返回值为布尔值。如果 `obj` 不是对象则会报错 `TypeError`
+- `Reflect.deleteProperty(obj, property)` 是 `delete obj[property]` 的函数化，用于删除 `obj` 对象的 `property` 属性，返回值为布尔值。如果 `obj` 不是对象则会报错 `TypeError`
+- `Reflect.construct(obj, args)` 等同于 `new target(...args)`
+- `Reflect.getPrototypeOf(obj)` 用于读取 `obj` 的 `_proto_` 属性。在 `obj` 不是对象时不会像 `Object` 一样把 `obj` 转为对象，而是会报错
+- `Reflect.setPrototypeOf(obj, newProto)` 用于设置目标对象的 `prototype`
+- `Reflect.apply(func, thisArg, args)` 等同于 `Function.prototype.apply.call(func, thisArg, args)` 。 `func` 表示目标函数， `thisArg` 表示目标函数绑定的 `this` 对象， `args` 表示目标函数调用时传入的参数列表，可以是数组或类似数组的对象。若目标函数无法调用，会抛出 `TypeError`
+- `Reflect.defineProperty(target, propertyKey, attributes)` 用于为目标对象定义属性。如果 `target` 不是对象，会抛出错误。
+- `Reflect.getOwnPropertyDescriptor(target, propertyKey)` 用于得到 `target` 对象的 `propertyKey` 属性的描述对象。在 `target` 不是对象时，会抛出错误表示参数非法，不会将非对象转换为对象
+- `Reflect.isExtensible(target)` 用于判断 `target` 对象是否可扩展。返回值为布尔值。如果 `target` 参数不是对象，会抛出错误
+- `Reflect.preventExtensions(target)` 用于让 `target` 对象变为不可扩展。如果 `target` 参数不是对象，会抛出错误
+- `Reflect.ownKeys(target)` 用于返回 `target` 对象的所有属性，等同于 `Object.getOwnPropertyNames` 与 `Object.getOwnPropertySymbols` 之和
